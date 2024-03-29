@@ -1,28 +1,29 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="gestionar_recogida_cliente.list">
-      <field name="name">gestionar_recogida_cliente list</field>
-      <field name="model">gestionar_recogida_cliente.gestionar_recogida_cliente</field>
+
+    <record model="ir.ui.view" id="gestionar_recogida_cliente.order_window_tree">
+      <field name="name">Pedidos</field>
+      <field name="model">gestionar_recogida_cliente.order</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="code"/>
+          <field name="state"/>
+          <field name="order_date"/>
+          <field name="pick_up_date"/>
         </tree>
       </field>
     </record>
--->
+
 
     <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window">
-      <field name="name">gestionar_recogida_cliente window</field>
-      <field name="res_model">gestionar_recogida_cliente.gestionar_recogida_cliente</field>
+
+    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order">
+      <field name="name">Pedidos</field>
+      <field name="res_model">gestionar_recogida_cliente.order</field>
       <field name="view_mode">tree,form</field>
     </record>
--->
+
 
     <!-- server action to the one above -->
 <!--
@@ -41,20 +42,20 @@
 -->
 
     <!-- Top menu item -->
-<!--
-    <menuitem name="gestionar_recogida_cliente" id="gestionar_recogida_cliente.menu_root"/>
--->
+
+    <menuitem name="Gestionar recogida cliente" id="gestionar_recogida_cliente.menu_root"/>
+
     <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="gestionar_recogida_cliente.menu_1" parent="gestionar_recogida_cliente.menu_root"/>
-    <menuitem name="Menu 2" id="gestionar_recogida_cliente.menu_2" parent="gestionar_recogida_cliente.menu_root"/>
--->
+
+    <menuitem name="Inicio" id="gestionar_recogida_cliente.menu_1" parent="gestionar_recogida_cliente.menu_root"/>
+    <!-- <menuitem name="Menu 2" id="gestionar_recogida_cliente.menu_2" parent="gestionar_recogida_cliente.menu_root"/> -->
+
     <!-- actions -->
-<!--
-    <menuitem name="List" id="gestionar_recogida_cliente.menu_1_list" parent="gestionar_recogida_cliente.menu_1"
-              action="gestionar_recogida_cliente.action_window"/>
-    <menuitem name="Server to list" id="gestionar_recogida_cliente" parent="gestionar_recogida_cliente.menu_2"
-              action="gestionar_recogida_cliente.action_server"/>
--->
+
+    <menuitem name="Pedidos" id="gestionar_recogida_cliente.order_list" parent="gestionar_recogida_cliente.menu_1"
+              action="gestionar_recogida_cliente.action_window_order"/>
+    <!-- <menuitem name="Server to list" id="gestionar_recogida_cliente" parent="gestionar_recogida_cliente.menu_2"
+              action="gestionar_recogida_cliente.action_server"/> -->
+
   </data>
 </odoo>

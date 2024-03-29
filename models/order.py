@@ -1,0 +1,22 @@
+# -*- coding: utf-8 -*-
+
+from odoo import models, fields, api
+
+
+class order(models.Model):
+    _name = 'gestionar_recogida_cliente.order'
+    _description = 'Pedido de cliente'
+    _rec_name = 'code'
+
+    code = fields.Char(size = 6, required=True, string="Número")
+    state = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Recogido')],default = '0', required=True, string="Estado")
+    order_date = fields.Date(string="Fecha pedido")
+    pick_up_date = fields.Date(string="Fecha recogida")
+
+    # Enlace con cliente
+    """ client_id = fields.Many2one('res_partner')
+    client_name = fields.Char(related='client_id.name')
+    HABRÁ QUE RELACIONAR CLIENTE CON PEDIDO DESDE LA BBDD MANUALMENTE """
+
+
+
