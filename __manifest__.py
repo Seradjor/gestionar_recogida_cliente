@@ -34,9 +34,14 @@
 
     # always loaded
     'data': [
+        # Seguridad
         'security/ir.model.access.csv',
+        # Vistas
         'views/views.xml',
         'views/templates.xml',
+        # Datos de modelos
+        'data/products.xml',
+        'data/orders.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

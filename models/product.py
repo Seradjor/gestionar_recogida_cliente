@@ -8,7 +8,7 @@ class product(models.Model):
     _description = 'Producto solicitado en un pedido'
     _rec_name = 'name'
 
-    code = fields.Char(size = 13, required=True, string="EAN")
+    code = fields.Char(size = 6, required=True, string="EAN")
     name = fields.Char(required=True, string="Nombre")
     unit = fields.Char(string="Unidad de medida")
     disponible_stock = fields.Integer(string="Stock disponible")

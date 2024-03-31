@@ -1,0 +1,46 @@
+<odoo>
+  <data>
+    <!-- Creación de pedido -->
+    <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024001">
+      <field name="code">2024001</field>
+      <field name="state">0</field>
+      <field name="order_date">2024-3-31</field>
+    </record>
+
+    <!-- Añadimos productos al pedido -->
+    <record model="gestionar_recogida_cliente.order_product" id="gestionar_recogida_cliente.order_product_202400101">
+      <field name="order_id" ref="gestionar_recogida_cliente.order_2024001"></field>
+      <field name="product_id" ref="gestionar_recogida_cliente.product_LAMROS"></field>
+      <field name="quantity">10000</field>
+    </record>
+    <record model="gestionar_recogida_cliente.order_product" id="gestionar_recogida_cliente.order_product_202400102">
+      <field name="order_id" ref="gestionar_recogida_cliente.order_2024001"></field>
+      <field name="product_id" ref="gestionar_recogida_cliente.product_LAMTIN"></field>
+      <field name="quantity">8000</field>
+    </record>
+
+    <!-- Creación de pedido -->
+    <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024002">
+      <field name="code">2024002</field>
+      <field name="state">0</field>
+      <field name="order_date">2024-4-5</field>
+    </record>
+
+    <!-- Añadimos productos al pedido -->
+    <record model="gestionar_recogida_cliente.order_product" id="gestionar_recogida_cliente.order_product_202400201">
+      <field name="order_id" ref="gestionar_recogida_cliente.order_2024002"></field>
+      <field name="product_id" ref="gestionar_recogida_cliente.product_LAMROS"></field>
+      <field name="quantity">15000</field>
+    </record>
+    <record model="gestionar_recogida_cliente.order_product" id="gestionar_recogida_cliente.order_product_202400202">
+      <field name="order_id" ref="gestionar_recogida_cliente.order_2024002"></field>
+      <field name="product_id" ref="gestionar_recogida_cliente.product_LAMBLA"></field>
+      <field name="quantity">20000</field>
+    </record>
+    <record model="gestionar_recogida_cliente.order_product" id="gestionar_recogida_cliente.order_product_202400203">
+      <field name="order_id" ref="gestionar_recogida_cliente.order_2024002"></field>
+      <field name="product_id" ref="gestionar_recogida_cliente.product_MOSCAT"></field>
+      <field name="quantity">5000</field>
+    </record>
+  </data>
+</odoo>

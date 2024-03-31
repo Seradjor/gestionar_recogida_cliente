@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+    <record model="gestionar_recogida_cliente.product" id="gestionar_recogida_cliente.product_LAMROS">
+      <field name="code">LAMROS</field>
+      <field name="name">Lambrusco rosado</field>
+      <field name="unit">botella</field>
+      <field name="disponible_stock">5000</field>
+    </record>
+    <record model="gestionar_recogida_cliente.product" id="gestionar_recogida_cliente.product_LAMTIN">
+      <field name="code">LAMTIN</field>
+      <field name="name">Lambrusco tinto</field>
+      <field name="unit">botella</field>
+      <field name="disponible_stock">10000</field>
+    </record>
+    <record model="gestionar_recogida_cliente.product" id="gestionar_recogida_cliente.product_LAMBLA">
+      <field name="code">LAMBLA</field>
+      <field name="name">Lambrusco blanco</field>
+      <field name="unit">botella</field>
+      <field name="disponible_stock">0</field>
+    </record>
+    <record model="gestionar_recogida_cliente.product" id="gestionar_recogida_cliente.product_MOSCAT">
+      <field name="code">MOSCAT</field>
+      <field name="name">Moscatel</field>
+      <field name="unit">botella</field>
+      <field name="disponible_stock">7000</field>
+    </record>
+  </data>
+</odoo>

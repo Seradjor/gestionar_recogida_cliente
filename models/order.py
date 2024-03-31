@@ -8,7 +8,7 @@ class order(models.Model):
     _description = 'Pedido de cliente'
     _rec_name = 'code'
 
-    code = fields.Char(size = 6, required=True, string="Número")
+    code = fields.Char(size = 7, required=True, string="Número")
     state = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Recogido')],default = '0', required=True, string="Estado")
     order_date = fields.Date(string="Fecha pedido")
     pick_up_date = fields.Date(string="Fecha recogida")
