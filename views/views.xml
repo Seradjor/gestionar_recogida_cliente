@@ -15,6 +15,38 @@
       </field>
     </record>
 
+    <!-- Formulario pedido -->
+
+    <record model="ir.ui.view" id="gestionar_recogida_cliente.order_window_form">
+      <field name="name">Pedidos</field>
+      <field name="model">gestionar_recogida_cliente.order</field>
+      <field name="arch" type="xml">
+        <form>
+          <header style="margin-bottom:0">
+            <button string="Preparado" name="order_ready" type="object" class="oe_edit_only oe_highlight"/>
+            <field name="state" widget="statusbar" statusbar_visible="0,1,2,3"/>
+          </header>
+          <group style="margin-top: 0">
+            <group string="Pedido">
+              <field name="code" style="width:100px"/>
+            </group>
+            <group string="Fechas">
+              <field name="order_date" style="width:100px"/>
+              <field name="pick_up_date" style="width:100px"/>
+            </group>
+          </group>
+          <group>
+            <field name="products_ids" style="width:80%">
+              <tree>
+                <field name="quantity"/>
+                <field name="product_name"/>
+              </tree>
+            </field>
+          </group>
+        </form>
+      </field>
+    </record>
+
     <record model="ir.ui.view" id="gestionar_recogida_cliente.product_window_tree">
       <field name="name">Productos</field>
       <field name="model">gestionar_recogida_cliente.product</field>
@@ -26,7 +58,7 @@
           <field name="disponible_stock"/>
           <field name="reserved_stock"/>
         </tree>
-      </field>
+      </field> 
     </record>
 
     <record model="ir.ui.view" id="gestionar_recogida_cliente.order_product_window_tree">

@@ -20,5 +20,10 @@ class order(models.Model):
 
     # Enlace con product a través de order_product
     products_ids = fields.One2many('gestionar_recogida_cliente.order_product', 'order_id', string="Productos")
+
+
+    # Función cambio de estado pedido
+    def order_ready(self):
+        print()
     
 
