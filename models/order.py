@@ -22,8 +22,22 @@ class order(models.Model):
     products_ids = fields.One2many('gestionar_recogida_cliente.order_product', 'order_id', string="Productos")
 
 
-    # Función cambio de estado pedido
-    def order_ready(self):
-        print()
+    # Función retroceder estado
+    def state_back(self):
+        if self.state == '2':
+            self.write({'state' : '1'}) 
+        elif self.state == '3':
+            self.write({'state' : '2'}) 
+        else: 
+            pass
+
+    # Función avanzar estado
+    def state_forward(self):
+        if self.state == '1':
+            self.write({'state' : '2'})
+        elif self.state == '2':
+            self.write({'state' : '3'}) 
+        else: 
+            pass
     
 

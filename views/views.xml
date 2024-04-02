@@ -22,9 +22,10 @@
       <field name="model">gestionar_recogida_cliente.order</field>
       <field name="arch" type="xml">
         <form>
-          <header style="margin-bottom:0">
-            <button string="Preparado" name="order_ready" type="object" class="oe_edit_only oe_highlight"/>
-            <field name="state" widget="statusbar" statusbar_visible="0,1,2,3"/>
+          <header style="margin-bottom:0; display:flex; justify-content:right">
+            <button name="state_back" string="retroceder" icon="fa-chevron-left" type="object" class="oe_edit_only oe_highlight" attrs="{'invisible': [('state', '=', '0')]}"/>
+            <button name="state_forward" string="avanzar" icon="fa-chevron-right" type="object" class="oe_edit_only oe_highlight" attrs="{'invisible': [('state', '=', '0')]}"/>
+            <field name="state" widget="statusbar" statusbar_visible="0,1,2,3" style="margin-left:10px"/>
           </header>
           <group style="margin-top: 0">
             <group string="Pedido">
