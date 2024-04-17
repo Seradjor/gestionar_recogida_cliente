@@ -14,7 +14,7 @@ class order(models.Model):
     code = fields.Char(size = 7, string="Número", readonly=True, default=lambda self: self._generate_order_number())
     state = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Confirmada recogida'),('4','Recogido')],default = '0', required=True, string="Estado")
     order_date = fields.Date(string="Fecha pedido", default=lambda self:datetime.date.today())
-    pick_up_date = fields.Date(string="Fecha recogida")
+    pick_up_date = fields.Datetime(string="Fecha recogida")
 
     # Enlace con client
     client_id = fields.Many2one('res.partner')
@@ -43,8 +43,19 @@ class order(models.Model):
     @api.constrains('pick_up_date')
     def _check_pick_up_date(self):
         for record in self:
-            if record.pick_up_date < record.order_date:
+            if record.pick_up_date.date() < record.order_date:
                 raise ValidationError('La fecha de recogida no puede ser anterior a la fecha de pedido.')
+            
+    # Establecemos el valor 00 tanto a los minutos como los segundos para cada nuevo registro
+    @api.onchange('pick_up_date')
+    def _onchange_pick_up_date(self):
+        if self.pick_up_date:
+            self.pick_up_date = self.pick_up_date.replace(minute=0, second=0)
+
+    # El valor en el campo pick_up_date no se puede repetir, solo puede haber una carga por hora.
+    _sql_constraints = [
+        ('pick_up_uniq', 'unique(pick_up_date)', 'Ya existe una recogida en dicha franja horaria, elija otra opción.'),
+    ]
 
 
     """ FUNCIONES BOTONERAS """

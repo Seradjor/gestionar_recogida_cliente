@@ -30,12 +30,12 @@
           </header>
           <group style="margin-top: 0">
             <group string="Pedido">
-              <field name="code" style="width:100px"/>
-              <field name="client_name" style="width:100px"/>
+              <field name="code"/>
+              <field name="client_name"/>
             </group>
             <group string="Fechas">
               <field name="order_date" style="width:100px"/>
-              <field name="pick_up_date" style="width:100px"/>
+              <field name="pick_up_date" style="width:150px"/>
             </group>
           </group>
           <group>
@@ -76,7 +76,16 @@
     </record> -->
   
     <!-- Calendario recogidas -->  
-
+    <record model="ir.ui.view" id="view_order_calendar">
+      <field name="name">Visualizar</field>
+      <field name="model">gestionar_recogida_cliente.order</field>
+      <field name="arch" type="xml">
+          <calendar string="Calendario recogidas" date_start="pick_up_date" date_stop="pick_up_date" create="false">
+            <field name="code" string="Número pedido"/>
+            <field name="pick_up_date"/>
+          </calendar>
+      </field>
+    </record>
 
     <!-- actions opening views on models -->
 
@@ -130,7 +139,7 @@
     <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order_collections_view">
       <field name="name">Calendario recogidas</field>
       <field name="res_model">gestionar_recogida_cliente.order</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">calendar</field>
       <field name="domain">[('state', '=', '3')]</field>
     </record>
 
