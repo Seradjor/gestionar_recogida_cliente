@@ -9,7 +9,7 @@ class order(models.Model):
     _rec_name = 'code'
 
     code = fields.Char(size = 7, required=True, string="Número")
-    state = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Recogido')],default = '0', required=True, string="Estado")
+    state = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Confirmada recogida'),('4','Recogido')],default = '0', required=True, string="Estado")
     order_date = fields.Date(string="Fecha pedido")
     pick_up_date = fields.Date(string="Fecha recogida")
 
@@ -22,12 +22,18 @@ class order(models.Model):
     products_ids = fields.One2many('gestionar_recogida_cliente.order_product', 'order_id', string="Productos")
 
 
+    # Función confirmar pedido
+    def state_1(self):
+        self.write({'state' : '1'})
+
     # Función retroceder estado
     def state_back(self):
         if self.state == '2':
             self.write({'state' : '1'}) 
         elif self.state == '3':
-            self.write({'state' : '2'}) 
+            self.write({'state' : '2'})
+        elif self.state == '4':
+            self.write({'state' : '3'}) 
         else: 
             pass
 
@@ -37,6 +43,8 @@ class order(models.Model):
             self.write({'state' : '2'})
         elif self.state == '2':
             self.write({'state' : '3'}) 
+        elif self.state == '3':
+            self.write({'state' : '4'}) 
         else: 
             pass
     

@@ -3,7 +3,7 @@
     <!-- explicit list view definition -->
 
     <record model="ir.ui.view" id="gestionar_recogida_cliente.order_window_tree">
-      <field name="name">Pedidos</field>
+      <field name="name">Pedidos clientes</field>
       <field name="model">gestionar_recogida_cliente.order</field>
       <field name="arch" type="xml">
         <tree>
@@ -18,14 +18,15 @@
     <!-- Formulario pedido -->
 
     <record model="ir.ui.view" id="gestionar_recogida_cliente.order_window_form">
-      <field name="name">Pedidos</field>
+      <field name="name">Pedidos clientes</field>
       <field name="model">gestionar_recogida_cliente.order</field>
       <field name="arch" type="xml">
         <form>
           <header style="margin-bottom:0; display:flex; justify-content:right">
-            <button name="state_back" string="retroceder" icon="fa-chevron-left" type="object" class="oe_edit_only oe_highlight" attrs="{'invisible': [('state', '=', '0')]}"/>
-            <button name="state_forward" string="avanzar" icon="fa-chevron-right" type="object" class="oe_edit_only oe_highlight" attrs="{'invisible': [('state', '=', '0')]}"/>
-            <field name="state" widget="statusbar" statusbar_visible="0,1,2,3" style="margin-left:10px"/>
+            <button name="state_1" string="Confirmar pedido" type="object" class="oe_edit_only oe_highlight" attrs="{'invisible': [('state', '!=', '0')]}"/>
+            <button name="state_back" string="retroceder" icon="fa-chevron-left" type="object" class="oe_edit_only oe_highlight" attrs="{'invisible': [('state', 'in', ['0','1'])]}"/>
+            <button name="state_forward" string="avanzar" icon="fa-chevron-right" type="object" class="oe_edit_only oe_highlight" attrs="{'invisible': [('state', 'in', ['0','4'])]}"/>
+            <field name="state" widget="statusbar" statusbar_visible="0,1,2,3,4" style="margin-left:10px"/>
           </header>
           <group style="margin-top: 0">
             <group string="Pedido">
@@ -48,7 +49,7 @@
       </field>
     </record>
 
-    <record model="ir.ui.view" id="gestionar_recogida_cliente.product_window_tree">
+    <!-- <record model="ir.ui.view" id="gestionar_recogida_cliente.product_window_tree">
       <field name="name">Productos</field>
       <field name="model">gestionar_recogida_cliente.product</field>
       <field name="arch" type="xml">
@@ -71,18 +72,41 @@
           <field name="product_name"/>
         </tree>
       </field>
-    </record>
+    </record> -->
+  
+    <!-- Calendario recogidas -->  
 
 
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order">
-      <field name="name">Pedidos</field>
+      <field name="name">Pedidos clientes</field>
       <field name="res_model">gestionar_recogida_cliente.order</field>
       <field name="view_mode">tree,form</field>
     </record>
 
-    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_product">
+    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order_not_ready">
+      <field name="name">Pendientes preparación</field>
+      <field name="res_model">gestionar_recogida_cliente.order</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('state', '=', '1')]</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order_ready">
+      <field name="name">Pendientes confirmación recogida</field>
+      <field name="res_model">gestionar_recogida_cliente.order</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('state', '=', '2')]</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order_collection_confirmed">
+      <field name="name">Confirmados recogida</field>
+      <field name="res_model">gestionar_recogida_cliente.order</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('state', '=', '3')]</field>
+    </record>
+
+    <!-- <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_product">
       <field name="name">Productos</field>
       <field name="res_model">gestionar_recogida_cliente.product</field>
       <field name="view_mode">tree,form</field>
@@ -92,23 +116,22 @@
       <field name="name">Order-Products</field>
       <field name="res_model">gestionar_recogida_cliente.order_product</field>
       <field name="view_mode">tree,form</field>
+    </record> -->
+
+    <!-- Calendario recogidas -->
+
+    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order_collections">
+      <field name="name">Calendario recogidas</field>
+      <field name="res_model">gestionar_recogida_cliente.order</field>
+      <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="gestionar_recogida_cliente.action_server">
-      <field name="name">gestionar_recogida_cliente server</field>
-      <field name="model_id" ref="model_gestionar_recogida_cliente_gestionar_recogida_cliente"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
+    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order_collections_view">
+      <field name="name">Calendario recogidas</field>
+      <field name="res_model">gestionar_recogida_cliente.order</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('state', '=', '3')]</field>
     </record>
--->
 
     <!-- Top menu item -->
 
@@ -117,18 +140,36 @@
     <!-- menu categories -->
 
     <menuitem name="Inicio" id="gestionar_recogida_cliente.menu_1" parent="gestionar_recogida_cliente.menu_root"/>
-    <!-- <menuitem name="Menu 2" id="gestionar_recogida_cliente.menu_2" parent="gestionar_recogida_cliente.menu_root"/> -->
 
     <!-- actions -->
 
-    <menuitem name="Pedidos" id="gestionar_recogida_cliente.order_list" parent="gestionar_recogida_cliente.menu_1"
+    <menuitem name="Pedidos clientes" id="gestionar_recogida_cliente.order_list" parent="gestionar_recogida_cliente.menu_1"
               action="gestionar_recogida_cliente.action_window_order"/>
-    <menuitem name="Productos" id="gestionar_recogida_cliente.product_list" parent="gestionar_recogida_cliente.menu_1"
-              action="gestionar_recogida_cliente.action_window_product"/>
-    <menuitem name="Order-Products" id="gestionar_recogida_cliente.order_product_list" parent="gestionar_recogida_cliente.menu_1"
-              action="gestionar_recogida_cliente.action_window_order_product"/>
-    <!-- <menuitem name="Server to list" id="gestionar_recogida_cliente" parent="gestionar_recogida_cliente.menu_2"
-              action="gestionar_recogida_cliente.action_server"/> -->
+    <!-- <menuitem name="Productos" id="gestionar_recogida_cliente.product_list" parent="gestionar_recogida_cliente.menu_1"
+              action="gestionar_recogida_cliente.action_window_product"/> -->
+    <!-- <menuitem name="Order-Products" id="gestionar_recogida_cliente.order_product_list" parent="gestionar_recogida_cliente.menu_1"
+              action="gestionar_recogida_cliente.action_window_order_product"/> -->
+
+    <!-- Calendario recogidas -->
+
+    <menuitem name="Calendario recogidas" id="gestionar_recogida_cliente.order_collections_list" parent="gestionar_recogida_cliente.menu_1"
+              action="gestionar_recogida_cliente.action_window_order_collections"/>
+
+    <!-- Submenús pedidos-->
+
+    <menuitem name="Pendientes preparación" id="gestionar_recogida_cliente.order_not_ready_list" parent="gestionar_recogida_cliente.order_list"
+              action="gestionar_recogida_cliente.action_window_order_not_ready"/>
+
+    <menuitem name="Pendientes confirmación recogida" id="gestionar_recogida_cliente.order_ready_list" parent="gestionar_recogida_cliente.order_list"
+              action="gestionar_recogida_cliente.action_window_order_ready"/>
+
+    <menuitem name="Confirmados recogida" id="gestionar_recogida_cliente.order_collection_confirmed_list" parent="gestionar_recogida_cliente.order_list"
+              action="gestionar_recogida_cliente.action_window_order_collection_confirmed"/>
+
+    <!-- Submenú calendario recogidas -->
+
+    <menuitem name="Visualizar" id="gestionar_recogida_cliente.order_collections_view_list" parent="gestionar_recogida_cliente.order_collections_list"
+              action="gestionar_recogida_cliente.action_window_order_collections_view"/>
 
   </data>
 </odoo>
