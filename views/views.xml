@@ -31,6 +31,7 @@
           <group style="margin-top: 0">
             <group string="Pedido">
               <field name="code" style="width:100px"/>
+              <field name="client_name" style="width:100px"/>
             </group>
             <group string="Fechas">
               <field name="order_date" style="width:100px"/>

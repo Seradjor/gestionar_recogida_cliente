@@ -14,9 +14,9 @@ class order(models.Model):
     pick_up_date = fields.Date(string="Fecha recogida")
 
     # Enlace con client
-    """ client_id = fields.Many2one('res_partner')
-    client_name = fields.Char(related='client_id.name')
-    HABRÁ QUE RELACIONAR CLIENTE CON PEDIDO DESDE LA BBDD MANUALMENTE """
+    client_id = fields.Many2one('res.partner')
+    client_name = fields.Char(related='client_id.name', string="Cliente")
+    """ HABRÁ QUE RELACIONAR CLIENTE CON PEDIDO DESDE LA BBDD MANUALMENTE """
 
     # Enlace con product a través de order_product
     products_ids = fields.One2many('gestionar_recogida_cliente.order_product', 'order_id', string="Productos")
