@@ -12,20 +12,19 @@ class order(models.Model):
     _rec_name = 'code'
 
     code = fields.Char(size = 7, string="Número", readonly=True, default=lambda self: self._generate_order_number())
-    state = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Confirmada recogida'),('4','Recogido')],default = '0', required=True, string="Estado")
-    order_date = fields.Date(string="Fecha pedido", default=lambda self:datetime.date.today())
+    state_order = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Confirmada recogida'),('4','Recogido')],default = '0', required=True, string="Estado")
+    order_date = fields.Date(string="Fecha pedido", required=True, default=lambda self:datetime.date.today())
     pick_up_date = fields.Datetime(string="Fecha recogida")
 
     # Enlace con client
-    client_id = fields.Many2one('res.partner')
-    client_name = fields.Char(related='client_id.name', string="Cliente")
-    """ HABRÁ QUE RELACIONAR CLIENTE CON PEDIDO DESDE LA BBDD MANUALMENTE """
+    client_id = fields.Many2one('res.partner', required=True, string="Cliente") # Me sale el siguiente error con required= -> odoo.schema: Table 'gestionar_recogida_cliente_order': unable to set NOT NULL on column 'client_id' 
 
     # Enlace con product a través de order_product
     products_ids = fields.One2many('gestionar_recogida_cliente.order_product', 'order_id', string="Productos")
 
 
     # Generamos número de pedido automáticamente
+    @api.model
     def _generate_order_number(self):
         today = datetime.date.today()
         year = str(today.year)
@@ -38,52 +37,73 @@ class order(models.Model):
         else:
             new_code = year + '001'
         return new_code
-    
-    # Comprobación fecha recogiga es posterior a fecha pedido
-    @api.constrains('pick_up_date')
-    def _check_pick_up_date(self):
-        for record in self:
-            if record.pick_up_date.date() < record.order_date:
-                raise ValidationError('La fecha de recogida no puede ser anterior a la fecha de pedido.')
             
-    # Establecemos el valor 00 tanto a los minutos como los segundos para cada nuevo registro
+    # Comprobamos que la fecha de recogida es posterior a la fecha de pedido y establecemos el valor 00 tanto a los minutos como los segundos para cada nuevo registro
     @api.onchange('pick_up_date')
     def _onchange_pick_up_date(self):
         if self.pick_up_date:
             self.pick_up_date = self.pick_up_date.replace(minute=0, second=0)
+        if self.pick_up_date.date() < self.order_date:
+            raise ValidationError('La fecha de recogida no puede ser anterior a la fecha de pedido.')
 
     # El valor en el campo pick_up_date no se puede repetir, solo puede haber una carga por hora.
     _sql_constraints = [
         ('pick_up_uniq', 'unique(pick_up_date)', 'Ya existe una recogida en dicha franja horaria, elija otra opción.'),
     ]
 
+    # Cambio stocks (de disponible a reservado)
+    @api.model
+    def _stock_change_disponible_reserved(self):
+        for line in self.products_ids:
+            product = line.product_id
+            quantity = line.quantity
+
+            # Actualiza el stock reservado del producto
+            product.write({'reserved_stock': product.reserved_stock + quantity})
+
+            # Actualiza el stock disponible del producto
+            product.write({'disponible_stock': product.disponible_stock - quantity})
+
+    # Cambio stocks (de reservado a disponible)
+    @api.model
+    def _stock_change_reserved_disponible(self):
+        for line in self.products_ids:
+            product = line.product_id
+            quantity = line.quantity
+
+            # Actualiza el stock reservado del producto
+            product.write({'reserved_stock': product.reserved_stock - quantity})
+
+            # Actualiza el stock disponible del producto
+            product.write({'disponible_stock': product.disponible_stock + quantity})            
+
+    # Cambio stocks (pedido entregado)
+    @api.model
+    def _stock_change_reserved(self):
+        for line in self.products_ids:
+            product = line.product_id
+            quantity = line.quantity
+
+            # Actualiza el stock reservado del producto
+            product.write({'reserved_stock': product.reserved_stock - quantity})
+
 
     """ FUNCIONES BOTONERAS """
 
-    # Función confirmar pedido
-    def state_1(self):
-        self.write({'state' : '1'})
-
     # Función retroceder estado
-    def state_back(self):
-        if self.state == '2':
-            self.write({'state' : '1'}) 
-        elif self.state == '3':
-            self.write({'state' : '2'})
-        elif self.state == '4':
-            self.write({'state' : '3'}) 
-        else: 
-            pass
+    @api.model
+    def state_order_back(self):
+        self.ensure_one()
+        self.state_order = str(int(self.state_order) - 1)
+        if self.state_order == '1':  # Si pasa al estado "Realizado"
+            self._stock_change_reserved_disponible()
 
     # Función avanzar estado
-    def state_forward(self):
-        if self.state == '1':
-            self.write({'state' : '2'})
-        elif self.state == '2':
-            self.write({'state' : '3'}) 
-        elif self.state == '3':
-            self.write({'state' : '4'}) 
-        else: 
-            pass
-    
-
+    @api.model
+    def state_order_forward(self):
+        self.ensure_one()
+        self.state_order = str(int(self.state_order) + 1)
+        if self.state_order == '2':  # Si pasa al estado "Preparado"
+            self._stock_change_disponible_reserved()
+        if self.state_order == '4':  # Si pasa al estado "Recogido"
+            self._stock_change_reserved()

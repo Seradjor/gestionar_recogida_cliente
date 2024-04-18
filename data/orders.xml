@@ -3,8 +3,9 @@
     <!-- Creación de pedido -->
     <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024001">
       <field name="code">2024001</field>
-      <field name="state">0</field>
+      <field name="state_order">0</field>
       <field name="order_date">2024-3-31</field>
+      <field name="client_id">8</field>
     </record>
 
     <!-- Añadimos productos al pedido -->
@@ -22,8 +23,9 @@
     <!-- Creación de pedido -->
     <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024002">
       <field name="code">2024002</field>
-      <field name="state">1</field>
+      <field name="state_order">1</field>
       <field name="order_date">2024-4-5</field>
+      <field name="client_id">8</field>
     </record>
 
     <!-- Añadimos productos al pedido -->
@@ -46,8 +48,9 @@
     <!-- Creación de pedido -->
     <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024003">
       <field name="code">2024003</field>
-      <field name="state">2</field>
+      <field name="state_order">2</field>
       <field name="order_date">2024-4-15</field>
+      <field name="client_id">8</field>
     </record>
 
     <!-- Añadimos productos al pedido -->
@@ -70,8 +73,9 @@
     <!-- Creación de pedido -->
     <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024004">
       <field name="code">2024004</field>
-      <field name="state">3</field>
+      <field name="state_order">3</field>
       <field name="order_date">2024-4-16</field>
+      <field name="client_id">8</field>
     </record>
 
     <!-- Añadimos productos al pedido -->
@@ -94,8 +98,9 @@
     <!-- Creación de pedido -->
     <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024005">
       <field name="code">2024005</field>
-      <field name="state">4</field>
+      <field name="state_order">4</field>
       <field name="order_date">2024-4-17</field>
+      <field name="client_id">8</field>
     </record>
 
     <!-- Añadimos productos al pedido -->
