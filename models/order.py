@@ -84,6 +84,22 @@ class order(models.Model):
             # Actualiza el stock reservado del producto
             product.write({'reserved_stock': product.reserved_stock - quantity})
 
+    # Comprobar stocks disponibles para validar preparación de pedidos.
+    def _check_disponible_stocks(self):
+        enough_stock = True
+        error_message = f"Faltan los siguientes productos: "
+        for line in self.products_ids:
+            product = line.product_id
+            quantity = line.quantity
+
+            # Comprobamos si hay suficiente stock
+            if product.disponible_stock < quantity:
+                enough_stock = False
+                error_message += f"\n- {product.name} ({-(product.disponible_stock - quantity):,})".replace(',', '.') # :,})".replace(',', '.') -> pongo separador de miles a la cantidad obtenida con ',', reemplazándolo por '.' después.
+
+        print(error_message)
+        return [enough_stock,error_message]
+
 
     """ FUNCIONES BOTONERAS """
 
@@ -98,6 +114,9 @@ class order(models.Model):
     def state_order_forward(self):
         self.ensure_one()
         if self.state_order == '1':  # Si está en el estado "Realizado"
+            validation_stock = self._check_disponible_stocks()
+            if validation_stock[0] == False:
+                raise ValidationError(validation_stock[1])
             self._stock_change_disponible_reserved()
         elif self.state_order == '2' and self.pick_up_date == False:  # Si está en el estado "Preparado"
             raise ValidationError('Falta introducir fecha recogida.')
