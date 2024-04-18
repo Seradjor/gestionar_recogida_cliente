@@ -90,15 +90,17 @@ class order(models.Model):
     # Función retroceder estado
     def state_order_back(self):
         self.ensure_one()
-        self.state_order = str(int(self.state_order) - 1)
-        if self.state_order == '1':  # Si pasa al estado "Realizado"
+        if self.state_order == '2':  # Si está en el estado "Preparado"
             self._stock_change_reserved_disponible()
+        self.state_order = str(int(self.state_order) - 1)
 
     # Función avanzar estado
     def state_order_forward(self):
         self.ensure_one()
-        self.state_order = str(int(self.state_order) + 1)
-        if self.state_order == '2':  # Si pasa al estado "Preparado"
+        if self.state_order == '1':  # Si está en el estado "Realizado"
             self._stock_change_disponible_reserved()
-        if self.state_order == '4':  # Si pasa al estado "Recogido"
+        elif self.state_order == '2' and self.pick_up_date == False:  # Si está en el estado "Preparado"
+            raise ValidationError('Falta introducir fecha recogida.')
+        elif self.state_order == '3':  # Si está en el estado "Confirmada recogida"
             self._stock_change_reserved()
+        self.state_order = str(int(self.state_order) + 1)
