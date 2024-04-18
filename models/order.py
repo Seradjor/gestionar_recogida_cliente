@@ -43,8 +43,8 @@ class order(models.Model):
     def _onchange_pick_up_date(self):
         if self.pick_up_date:
             self.pick_up_date = self.pick_up_date.replace(minute=0, second=0)
-        if self.pick_up_date.date() < self.order_date:
-            raise ValidationError('La fecha de recogida no puede ser anterior a la fecha de pedido.')
+            if self.pick_up_date.date() < self.order_date:
+                raise ValidationError('La fecha de recogida no puede ser anterior a la fecha de pedido.')
 
     # El valor en el campo pick_up_date no se puede repetir, solo puede haber una carga por hora.
     _sql_constraints = [
@@ -52,7 +52,6 @@ class order(models.Model):
     ]
 
     # Cambio stocks (de disponible a reservado)
-    @api.model
     def _stock_change_disponible_reserved(self):
         for line in self.products_ids:
             product = line.product_id
@@ -65,7 +64,6 @@ class order(models.Model):
             product.write({'disponible_stock': product.disponible_stock - quantity})
 
     # Cambio stocks (de reservado a disponible)
-    @api.model
     def _stock_change_reserved_disponible(self):
         for line in self.products_ids:
             product = line.product_id
@@ -78,7 +76,6 @@ class order(models.Model):
             product.write({'disponible_stock': product.disponible_stock + quantity})            
 
     # Cambio stocks (pedido entregado)
-    @api.model
     def _stock_change_reserved(self):
         for line in self.products_ids:
             product = line.product_id
@@ -91,7 +88,6 @@ class order(models.Model):
     """ FUNCIONES BOTONERAS """
 
     # Función retroceder estado
-    @api.model
     def state_order_back(self):
         self.ensure_one()
         self.state_order = str(int(self.state_order) - 1)
@@ -99,7 +95,6 @@ class order(models.Model):
             self._stock_change_reserved_disponible()
 
     # Función avanzar estado
-    @api.model
     def state_order_forward(self):
         self.ensure_one()
         self.state_order = str(int(self.state_order) + 1)
