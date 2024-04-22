@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from email.utils import formataddr
 
 import datetime
 
@@ -15,6 +16,7 @@ class order(models.Model):
     state_order = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Confirmada recogida'),('4','Recogido')],default = '0', required=True, string="Estado")
     order_date = fields.Date(string="Fecha pedido", required=True, default=lambda self:datetime.date.today())
     pick_up_date = fields.Datetime(string="Fecha recogida")
+    ready = fields.Boolean(string="Listo para recoger")
 
     # Enlace con client
     client_id = fields.Many2one('res.partner', required=True, string="Cliente") # Me sale el siguiente error con required= -> odoo.schema: Table 'gestionar_recogida_cliente_order': unable to set NOT NULL on column 'client_id' 
@@ -58,10 +60,12 @@ class order(models.Model):
             quantity = line.quantity
 
             # Actualiza el stock reservado del producto
-            product.write({'reserved_stock': product.reserved_stock + quantity})
+            product.reserved_stock += quantity
+            """ product.write({'reserved_stock': product.reserved_stock + quantity}) """
 
             # Actualiza el stock disponible del producto
-            product.write({'disponible_stock': product.disponible_stock - quantity})
+            product.disponible_stock -= quantity
+            """ product.write({'disponible_stock': product.disponible_stock - quantity}) """
 
     # Cambio stocks (de reservado a disponible)
     def _stock_change_reserved_disponible(self):
@@ -100,6 +104,41 @@ class order(models.Model):
         print(error_message)
         return [enough_stock,error_message]
 
+    # Envío del correo de confirmación de pedido preparado para su recogida al cliente.
+    def email_confirm_pickup(self):
+    
+        # Creamos la tabla con <html> que mostraremos luego en el correo
+        # Creamos inicio de la tabla
+        tabla_productos = "<table style='border-collapse:collapse'><tr><th style='border:1px solid black; padding:3px; text-align:left'>Producto</th><th style='border:1px solid black; padding:3px; text-align:center'>Cantidad</th></tr>"
+
+        # Rellenamos los datos con los productos del pedido.
+        for producto in self.products_ids:
+            tabla_productos += f"<tr><td style='border:1px solid black; padding:3px; text-align:left'>{producto.product_id.name}</td><td style='border:1px solid black; padding:3px; text-align:center'>{producto.quantity:,}</td></tr>"
+
+        # Cerramos tabla
+        tabla_productos += "</table>"
+
+        # Declaramos parámetros
+        Mail = self.env['mail.mail']
+        email_to = "serjorad@gmail.com"
+        email_from = "seradjor@gmail.com"
+        nombre_empresa = 'Bodega DAM, S.L.'
+        email_from_formatted = formataddr((nombre_empresa, email_from))
+        subject = f"Bodega DAM, S.L., Pedido {self.code}"
+        print(subject)
+        body_html = f"<h1>Bodega DAM, S.L.</h1><p>Estimado {self.client_id.name},<br><br>Le informamos que su pedido con el número {self.code} ya está listo para ser recogido. <br><br>Detalle pedido:  <br><br>{tabla_productos.replace(',', '.')} <br><br>Enlace de recogida: XXXX</p>"
+        
+        mail_values = {
+            'email_to': email_to,
+            'email_from': email_from_formatted,
+            'subject': subject,
+            'body_html': body_html,
+        }
+        
+        # Enviamos el correo
+        mail = Mail.create(mail_values)
+        mail.send()
+
 
     """ FUNCIONES BOTONERAS """
 
@@ -118,8 +157,10 @@ class order(models.Model):
             if validation_stock[0] == False:
                 raise ValidationError(validation_stock[1])
             self._stock_change_disponible_reserved()
+            self.email_confirm_pickup()
         elif self.state_order == '2' and self.pick_up_date == False:  # Si está en el estado "Preparado"
             raise ValidationError('Falta introducir fecha recogida.')
         elif self.state_order == '3':  # Si está en el estado "Confirmada recogida"
             self._stock_change_reserved()
         self.state_order = str(int(self.state_order) + 1)
+   
