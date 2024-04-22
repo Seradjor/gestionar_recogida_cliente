@@ -120,7 +120,7 @@ class order(models.Model):
 
         # Declaramos parámetros
         Mail = self.env['mail.mail']
-        email_to = "serjorad@gmail.com"
+        email_to = f"{self.client_id.email}"
         email_from = "seradjor@gmail.com"
         nombre_empresa = 'Bodega DAM, S.L.'
         email_from_formatted = formataddr((nombre_empresa, email_from))
@@ -163,4 +163,4 @@ class order(models.Model):
         elif self.state_order == '3':  # Si está en el estado "Confirmada recogida"
             self._stock_change_reserved()
         self.state_order = str(int(self.state_order) + 1)
-   
+ 
