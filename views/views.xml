@@ -23,9 +23,9 @@
       <field name="arch" type="xml">
         <form>
           <header style="margin-bottom:0; display:flex; justify-content:right">
-            <button name="state_order_forward" string="Confirmar pedido" type="object" class="oe_highlight" attrs="{'invisible': [('state_order', '!=', '0')]}"/>
-            <button name="state_order_back" string="retroceder" icon="fa-chevron-left" type="object" class="oe_highlight" attrs="{'invisible': [('state_order', 'in', ['0','1'])]}"/>
-            <button name="state_order_forward" string="avanzar" icon="fa-chevron-right" type="object" class="oe_highlight" attrs="{'invisible': [('state_order', 'in', ['0','4'])]}"/>
+            <button name="state_order_forward" string="Confirmar pedido" type="object" class="oe_read_only oe_highlight" attrs="{'invisible': [('state_order', '!=', '0')]}"/>
+            <button name="state_order_back" string="retroceder" icon="fa-chevron-left" type="object" class="oe_read_only oe_highlight" attrs="{'invisible': [('state_order', 'in', ['0','1'])]}"/>
+            <button name="state_order_forward" string="avanzar" icon="fa-chevron-right" type="object" class="oe_read_only oe_highlight" attrs="{'invisible': [('state_order', 'in', ['0','4'])]}"/>
             <field name="state_order" widget="statusbar" statusbar_visible="0,1,2,3,4" style="margin-left:10px"/>
           </header>
           <group style="margin-top: 0">
