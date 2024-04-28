@@ -35,7 +35,7 @@
             </group>
             <group string="Fechas">
               <field name="order_date" style="width:100px"/>
-              <field name="pick_up_date" style="width:150px"/>
+              <field name="pick_up_date" style="width:150px" readonly="True"/>
             </group>
           </group>
           <group>
@@ -117,11 +117,11 @@
       <field name="domain">[('state_order', '=', '3')]</field>
     </record>
 
-    <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_product">
+    <!-- <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_product">
       <field name="name">Productos</field>
       <field name="res_model">gestionar_recogida_cliente.product</field>
       <field name="view_mode">tree,form</field>
-    </record>
+    </record> -->
 
     <!-- <record model="ir.actions.act_window" id="gestionar_recogida_cliente.action_window_order_product">
       <field name="name">Order-Products</field>
@@ -157,8 +157,8 @@
     <menuitem name="Pedidos clientes" id="gestionar_recogida_cliente.order_list" parent="gestionar_recogida_cliente.menu_1" 
               action="gestionar_recogida_cliente.action_window_order"/>
               
-    <menuitem name="Productos" id="gestionar_recogida_cliente.product_list" parent="gestionar_recogida_cliente.menu_1"
-              action="gestionar_recogida_cliente.action_window_product"/>
+    <!-- <menuitem name="Productos" id="gestionar_recogida_cliente.product_list" parent="gestionar_recogida_cliente.menu_1"
+              action="gestionar_recogida_cliente.action_window_product"/> -->
     <!-- <menuitem name="Order-Products" id="gestionar_recogida_cliente.order_product_list" parent="gestionar_recogida_cliente.menu_1"
               action="gestionar_recogida_cliente.action_window_order_product"/> -->
 

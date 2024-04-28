@@ -109,11 +109,11 @@ class order(models.Model):
     
         # Creamos la tabla con <html> que mostraremos luego en el correo
         # Creamos inicio de la tabla
-        tabla_productos = "<table style='border-collapse:collapse'><tr><th style='border:1px solid black; padding:3px; text-align:left'>Producto</th><th style='border:1px solid black; padding:3px; text-align:center'>Cantidad</th></tr>"
+        tabla_productos = "<table style='border-collapse:collapse'><tr><th style='border:1px solid black; padding:3px; text-align:left'>Producto</th><th style='border:1px solid black; padding:3px; text-align:center'>Cantidad</th><th style='border:1px solid black; padding:3px; text-align:center'>Pallets</th></tr>"
 
         # Rellenamos los datos con los productos del pedido.
         for producto in self.products_ids:
-            tabla_productos += f"<tr><td style='border:1px solid black; padding:3px; text-align:left'>{producto.product_id.name}</td><td style='border:1px solid black; padding:3px; text-align:center'>{producto.quantity:,}</td></tr>"
+            tabla_productos += f"<tr><td style='border:1px solid black; padding:3px; text-align:left'>{producto.product_id.name}</td><td style='border:1px solid black; padding:3px; text-align:center'>{producto.quantity:,}</td><td style='border:1px solid black; padding:3px; text-align:center'>{(producto.quantity/1000):.0f}</td></tr>"
 
         # Cerramos tabla
         tabla_productos += "</table>"
