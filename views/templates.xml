@@ -1,24 +1,83 @@
 <odoo>
     <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
+
+        <template id="confirm_pick_up">
+          <t t-call="web.html_container"> <!-- Otra opción: web.external_layout ó website.layout-->
+
+          <xpath expr="//style" position="after">
+            <link rel="stylesheet" href="/gestionar_recogida_cliente/static/src/css/confirm_pick_up.css"/>
+          </xpath>
+
+            <div class="container">
+
+              <h1>Bodega DAM, S.L.</h1>
+
+              <h2>Pedido <t t-esc="confirm_pick_up.code"/></h2>
+
+
+              <table>
+              
+                <tr>
+
+                  <th>Producto</th>
+                  <th class="centrado">Cantidad</th>
+                  <th class="centrado">Pallets</th>
+                
+                </tr>
+
+                <t t-foreach="confirm_pick_up.products_ids" t-as="product">
+                  
+                  <tr>
+                      <td><t t-esc="product.product_name"/></td>
+                      <td class="centrado"><t t-esc="('{:,.0f}'.format(product.quantity)).replace(',', '.')"/></td>
+                      <td class="centrado"><t t-esc="round(product.quantity / 1000)"/></td>
+                  </tr>
+
+                </t>
+
+              </table>
+
+
+              <form role="form" method="POST" t-att-action="'/confirmpickup/' + str(confirm_pick_up.id)">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <p>Seleccione día y hora de recogida: 
+                  <select name="pick_up_date">
+                    <t t-foreach="confirm_pick_up.options_date_pick_up()" t-as="fecha">
+                      <option t-att-value="fecha.strftime('%Y-%m-%d %H:%M:%S')"><t t-esc="fecha.strftime('%d-%m-%Y %H:%M:%S')"/></option>
+                    </t>
+                  </select>
+                  <button type="submit">Confirmar fecha</button>
+                </p>
+                
+              </form>
+
+
+            <p id="pie"><t t-esc="'* Opciones disponibles a {}'.format(time.strftime('%d-%m-%Y %H:%M:%S'))"/></p>
+
+            </div>
+            
+          </t>
         </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
-            </t>
-          </dl>
+
+        <template id="confirmed_pick_up">
+          <t t-call="web.html_container">
+
+          <xpath expr="//style" position="after">
+            <link rel="stylesheet" href="/gestionar_recogida_cliente/static/src/css/confirm_pick_up.css"/>
+          </xpath>
+
+            <div class="container">
+
+              <h1>Bodega DAM, S.L.</h1>
+
+              <p>Muchas gracias por confiar en nosotros.</p>
+
+              <p>Nos vemos el próximo <t t-esc="confirm_pick_up.pick_up_date.strftime('%d-%m-%Y %H:%M:%S')"/>.</p>
+
+            </div>
+            
+          </t>
         </template>
--->
+
     </data>
 </odoo>

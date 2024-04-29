@@ -48,7 +48,7 @@
     <!-- Creación de pedido -->
     <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024003">
       <field name="code">2024003</field>
-      <field name="state_order">2</field>
+      <field name="state_order">1</field>
       <field name="order_date">2024-4-15</field>
       <field name="client_id">8</field>
     </record>
@@ -73,7 +73,7 @@
     <!-- Creación de pedido -->
     <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024004">
       <field name="code">2024004</field>
-      <field name="state_order">3</field>
+      <field name="state_order">1</field>
       <field name="order_date">2024-4-16</field>
       <field name="client_id">8</field>
     </record>
@@ -98,7 +98,7 @@
     <!-- Creación de pedido -->
     <record model="gestionar_recogida_cliente.order" id="gestionar_recogida_cliente.order_2024005">
       <field name="code">2024005</field>
-      <field name="state_order">4</field>
+      <field name="state_order">1</field>
       <field name="order_date">2024-4-17</field>
       <field name="client_id">8</field>
     </record>

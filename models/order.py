@@ -4,7 +4,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from email.utils import formataddr
 
-import datetime
+from datetime import datetime, timedelta
 
 
 class order(models.Model):
@@ -14,7 +14,7 @@ class order(models.Model):
 
     code = fields.Char(size = 7, string="Número", readonly=True, default=lambda self: self._generate_order_number())
     state_order = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Confirmada recogida'),('4','Recogido')],default = '0', required=True, string="Estado")
-    order_date = fields.Date(string="Fecha pedido", required=True, default=lambda self:datetime.date.today())
+    order_date = fields.Date(string="Fecha pedido", required=True, default=lambda self:datetime.today())
     pick_up_date = fields.Datetime(string="Fecha recogida")
     ready = fields.Boolean(string="Listo para recoger")
 
@@ -28,7 +28,7 @@ class order(models.Model):
     # Generamos número de pedido automáticamente
     @api.model
     def _generate_order_number(self):
-        today = datetime.date.today()
+        today = datetime.today()
         year = str(today.year)
         last_order = self.search([], order='id desc', limit=1)
         if last_order:
@@ -126,7 +126,7 @@ class order(models.Model):
         email_from_formatted = formataddr((nombre_empresa, email_from))
         subject = f"Bodega DAM, S.L., Pedido {self.code}"
         print(subject)
-        body_html = f"<h1>Bodega DAM, S.L.</h1><p>Estimado {self.client_id.name},<br><br>Le informamos que su pedido con el número {self.code} ya está listo para ser recogido. <br><br>Detalle pedido:  <br><br>{tabla_productos.replace(',', '.')} <br><br>Enlace de recogida: XXXX</p>"
+        body_html = f"<h1>Bodega DAM, S.L.</h1><p>Estimado {self.client_id.name},<br><br>Le informamos que su pedido con el número {self.code} ya está listo para ser recogido. <br><br>Detalle pedido:  <br><br>{tabla_productos.replace(',', '.')} <br><br>Enlace de recogida: <a href='http://localhost:8069/confirmpickup/{self.id}'>gestionar recogida</a></p>"
         
         mail_values = {
             'email_to': email_to,
@@ -164,3 +164,56 @@ class order(models.Model):
             self._stock_change_reserved()
         self.state_order = str(int(self.state_order) + 1)
  
+
+    # Cálculo de horas disponibles de recogida
+    
+    def options_date_pick_up(self):
+        # Guardamos recogidas 
+        days_pick_up = []
+        orders = self.env['gestionar_recogida_cliente.order'].search([])
+        for order in orders:
+            if order.pick_up_date: # Si tiene ya fecha de recogida
+                day_pick_up = order.pick_up_date + timedelta(hours=2) # Para corregir cálculo erróneo de hora !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                print(day_pick_up)
+                days_pick_up.append(day_pick_up)
+                
+        
+        print(days_pick_up)
+        
+        # Creamos variable donde guardar las fechas de recogida
+        options = []
+
+        # Obtenemos la fecha de hoy
+        today = datetime.now()
+
+        # Calculamos la fecha de inicio y fin de las próximas dos semanas
+        start_day = today + timedelta(days=1)  # Excluimos el día de hoy, el mismo día no habrán recogidas para organizar el almacén con tiempo
+        print(start_day)
+        final_day = start_day + timedelta(weeks=2) # Vamos a obtener fechas para las próximas 2 semanas
+        print(final_day)
+
+        # Iteramos sobre cada día en el rango de fechas
+        while start_day <= final_day:
+            # Excluimos los sábados (weekday() devuelve 5 para sábado) y domingos (6 para domingo)
+            if start_day.weekday() < 5:  # Si no es sábado ni domingo
+                print(start_day)
+
+                # Establecemos la hora de inicio y fin para cada día
+                start_hour = datetime(start_day.year, start_day.month, start_day.day, 8, 0, 0) # La primera recogida será a las 08:00
+                final_hour = datetime(start_day.year, start_day.month, start_day.day, 17, 0, 0) # La última recogida será a las 17:00
+
+                # Añadimos todas las horas dentro del rango para ese día
+                while start_hour <= final_hour:
+                    print(start_hour)
+                    if start_hour not in days_pick_up:
+                        options.append(start_hour)
+                    start_hour += timedelta(hours=1)
+
+
+            # Pasamos al siguiente día
+            start_day += timedelta(days=1)
+
+        # Devolvemos la lista de opciones de datetime
+        for i in options:
+            print(i)
+        return options

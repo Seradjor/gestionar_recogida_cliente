@@ -1,0 +1,52 @@
+*{
+    box-sizing: border-box;
+    font-size: 26px;
+}
+
+body{
+    background-image: url(/gestionar_recogida_cliente/static/src/img/viñedo.jpg);
+    background-size: cover;
+    background-color: rgba(255, 255, 255, 0.8);
+    background-blend-mode:lighten;
+}
+
+.container{
+    margin-top: 100px;
+    padding-left: 0;
+}
+
+h1{
+    font-weight: bold;
+    text-decoration: underline;
+    margin-bottom: 40px;
+}
+
+table{
+    border-collapse:collapse;
+    margin: 40px 0;
+}
+
+th, td{
+    border: 1px solid black;
+    padding:10px; 
+    text-align:left;
+}
+
+.centrado{
+    text-align: center;
+}
+
+#pie{
+    margin-top: 100px;
+    font-size: 16px;
+}
+
+button{
+    margin-left: 10px;
+    border-radius: 15px;
+    box-shadow: 2px 2px grey;
+}
+
+button:hover{
+    font-weight: bold;
+}
