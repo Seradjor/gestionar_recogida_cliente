@@ -11,6 +11,7 @@ hero_height: is-fullwidth
 ## Páginas a visitar
 
 - [Gestionar recogida cliente.](pages/gestionar_recogida_cliente)
+- [Manual usuario.](pages/gestionar_recogida_cliente_manual.md)
 
 
 ## Recursos utilizados

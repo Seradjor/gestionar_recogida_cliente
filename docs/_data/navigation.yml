@@ -1,2 +1,5 @@
 - name: Gestionar recogida cliente
   link: /pages/gestionar_recogida_cliente
+
+- name: Manual usuario
+  link: /pages/gestionar_recogida_cliente_manual
