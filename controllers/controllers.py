@@ -22,21 +22,4 @@ class GestionarRecogidaCliente(http.Controller):
             })
   
         
-        """ if http.request.httprequest.method == 'POST':
-            pick_up_date = http.request.params.get('pick_up_date')
-            # Guardar la fecha de recogida en el objeto confirm_pick_up
-            confirm_pick_up.write({'pick_up_date': pick_up_date})
-            # Guardar los cambios en la base de datos
-            confirm_pick_up.flush()
-            # Devolver la vista con un indicador de éxito
-            return http.request.render('gestionar_recogida_cliente.confirm_pick_up',{
-                "confirm_pick_up": confirm_pick_up,
-                "success": True  # Puedes enviar un indicador de éxito para mostrar un mensaje si es necesario
-            })
-        else:
-            # Si es una solicitud GET, simplemente renderiza la página
-            return http.request.render('gestionar_recogida_cliente.confirm_pick_up',{
-                "confirm_pick_up": confirm_pick_up,
-                "success": False  # Indicador de que no se ha procesado ningún formulario todavía
-            }) """
         

@@ -16,7 +16,6 @@ class order(models.Model):
     state_order = fields.Selection([('0','Iniciado'),('1','Realizado'),('2','Preparado'),('3','Confirmada recogida'),('4','Recogido')],default = '0', required=True, string="Estado")
     order_date = fields.Date(string="Fecha pedido", required=True, default=lambda self:datetime.today())
     pick_up_date = fields.Datetime(string="Fecha recogida")
-    ready = fields.Boolean(string="Listo para recoger")
 
     # Enlace con client
     client_id = fields.Many2one('res.partner', required=True, string="Cliente") # Me sale el siguiente error con required= -> odoo.schema: Table 'gestionar_recogida_cliente_order': unable to set NOT NULL on column 'client_id' 
