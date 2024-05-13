@@ -5,7 +5,7 @@
       <field name="code">2024001</field>
       <field name="state_order">1</field>
       <field name="order_date">2024-5-13</field>
-      <field name="client_id">8</field>
+      <field name="client_id">8</field>   <!-- ¡¡¡¡¡¡¡¡¡¡INDICAR ID CORRECTO!!!!!! -->
     </record>
 
     <!-- Añadimos productos al pedido -->
@@ -25,7 +25,7 @@
       <field name="code">2024002</field>
       <field name="state_order">1</field>
       <field name="order_date">2024-5-13</field>
-      <field name="client_id">8</field>
+      <field name="client_id">8</field>   <!-- ¡¡¡¡¡¡¡¡¡¡INDICAR ID CORRECTO!!!!!! -->
     </record>
 
     <!-- Añadimos productos al pedido -->
@@ -50,7 +50,7 @@
       <field name="code">2024003</field>
       <field name="state_order">1</field>
       <field name="order_date">2024-5-13</field>
-      <field name="client_id">8</field>
+      <field name="client_id">8</field>    <!-- ¡¡¡¡¡¡¡¡¡¡INDICAR ID CORRECTO!!!!!! -->
     </record>
 
     <!-- Añadimos productos al pedido -->
@@ -75,7 +75,7 @@
       <field name="code">2024004</field>
       <field name="state_order">1</field>
       <field name="order_date">2024-5-13</field>
-      <field name="client_id">8</field>
+      <field name="client_id">8</field>    <!-- ¡¡¡¡¡¡¡¡¡¡INDICAR ID CORRECTO!!!!!! -->
     </record>
 
     <!-- Añadimos productos al pedido -->
@@ -100,7 +100,7 @@
       <field name="code">2024005</field>
       <field name="state_order">0</field>
       <field name="order_date">2024-5-13</field>
-      <field name="client_id">8</field>
+      <field name="client_id">8</field>    <!-- ¡¡¡¡¡¡¡¡¡¡INDICAR ID CORRECTO!!!!!! -->
     </record>
 
     <!-- Añadimos productos al pedido -->
